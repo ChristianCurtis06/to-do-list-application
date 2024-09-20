@@ -17,21 +17,21 @@ def view_tasks():
 
 def mark_task():
     view_tasks()
-    mark_input = int(input(f"\nEnter which task you completed (1-{len(tasks)}): "))
+    mark_input = int(input("\nEnter which task you completed " + (f"(1-{len(tasks)})" if len(tasks) > 1 else "(1)") + ": "))
     if 1 <= mark_input <= len(tasks):
         tasks[mark_input - 1][1] = "Complete"
         print(f"'{tasks[mark_input - 1][0]}' marked 'Complete'.")
     else:
-        raise ValueError(f"Invalid input. Please enter a number corresponding to a task (1-{len(tasks)}).")
+        raise ValueError("Invalid input. Please enter a number corresponding to a task " + (f"(1-{len(tasks)})" if len(tasks) > 1 else "(1)") + ".")
     
 def delete_task():
     view_tasks()
-    delete_input = int(input(f"\nEnter which task you want to delete (1-{len(tasks)}): "))
+    delete_input = int(input(f"\nEnter which task you want to delete " + (f"(1-{len(tasks)})" if len(tasks) > 1 else "(1)") + ": "))
     if 1 <= delete_input <= len(tasks):
         print(f"'{tasks[delete_input - 1][0]}' deleted from your to-do list.")
         tasks.pop(delete_input - 1)
     else:
-        raise ValueError(f"Invalid input. Please enter a number corresponding to a task (1-{len(tasks)}).")
+        raise ValueError("Invalid input. Please enter a number corresponding to a task " + (f"(1-{len(tasks)})" if len(tasks) > 1 else "(1)") + ".")
 
 print("Welcome to the To-Do List App!")
 
@@ -67,5 +67,3 @@ while True:
             print("ValueError: Invalid input. Please enter a positive integer.")
         else:
             print(f"ValueError: {ve}")
-
-# Optional Features
