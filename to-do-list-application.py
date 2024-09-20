@@ -1,26 +1,41 @@
+from colorama import init, Fore, Style
+init(autoreset = True)
+
 tasks = []
 
 def add_task():
     task_input = input("\nEnter the task you would like to add to your to-do list: ").strip()
-    status = "Incomplete"
-    task_input = task_input[0].upper() + task_input[1:]
-    tasks.append([task_input, status])
-    print(f"'{task_input}' added to your to-do list.")
+    if task_input:
+        task_input = task_input[0].upper() + task_input[1:]
+    else:
+        raise ValueError("Invalid input. Please enter a valid task.")
+    priority_input = input("Enter the task priority (low, moderate, high): ").strip()
+    if priority_input.lower() == "low":
+        priority = Fore.CYAN + "Low"
+    elif priority_input.lower() == "moderate":
+        priority = Fore.YELLOW + "Moderate"
+    elif priority_input.lower() == "high":
+        priority = Fore.RED + "High"
+    else:
+        raise ValueError("Invalid input. Please enter a valid priority (low, moderate, high).")
+    status = Fore.RED + "Incomplete"
+    tasks.append([task_input, status, priority])
+    print(f"'{task_input}' with '{priority}" + Fore.WHITE + "' priority added to your to-do list.")
 
 def view_tasks():
     task_num = 1
     print(f"\nYour To-Do List:")
     for item in tasks:
-        task, status = item
-        print(f"{task_num}. Task: {task}. Status: {status}")
+        task, status, priority = item
+        print(f"{task_num}. Task: {task}. Status: {status}" + Fore.WHITE + f". Priority: {priority}" + Fore.WHITE + ".")
         task_num += 1
 
 def mark_task():
     view_tasks()
     mark_input = int(input("\nEnter which task you completed " + (f"(1-{len(tasks)})" if len(tasks) > 1 else "(1)") + ": "))
     if 1 <= mark_input <= len(tasks):
-        tasks[mark_input - 1][1] = "Complete"
-        print(f"'{tasks[mark_input - 1][0]}' marked 'Complete'.")
+        tasks[mark_input - 1][1] = Fore.GREEN + "Complete"
+        print(f"'{tasks[mark_input - 1][0]}' marked '" + Fore.GREEN + "Complete" + Fore.WHITE + "'.")
     else:
         raise ValueError("Invalid input. Please enter a number corresponding to a task " + (f"(1-{len(tasks)})" if len(tasks) > 1 else "(1)") + ".")
     
@@ -33,7 +48,7 @@ def delete_task():
     else:
         raise ValueError("Invalid input. Please enter a number corresponding to a task " + (f"(1-{len(tasks)})" if len(tasks) > 1 else "(1)") + ".")
 
-print("Welcome to the To-Do List App!")
+print(Style.BRIGHT + "Welcome to the To-Do List App!")
 
 while True:
     print("\nMenu:\n1. Add a task\n2. View tasks\n3. Mark a task as complete\n4. Delete a task\n5. Quit")
