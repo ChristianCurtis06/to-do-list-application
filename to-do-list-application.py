@@ -1,26 +1,35 @@
 tasks = []
 
 def add_task():
-    task_input = input("Enter the task you would like to add to your to-do list: ").capitalize()
+    task_input = input("\nEnter the task you would like to add to your to-do list: ").strip()
     status = "Incomplete"
+    task_input = task_input[0].upper() + task_input[1:]
     tasks.append([task_input, status])
     print(f"'{task_input}' added to your to-do list.")
 
 def view_tasks():
-    print(f"To-Do List:\n{tasks}")
+    task_num = 1
+    print(f"\nYour To-Do List:")
+    for item in tasks:
+        task, status = item
+        print(f"{task_num}. Task: {task}. Status: {status}")
+        task_num += 1
 
 def mark_task():
     view_tasks()
-    mark_input = int(input(f"Enter which task you completed (1-{len(tasks)}): "))
+    mark_input = int(input(f"\nEnter which task you completed (1-{len(tasks)}): "))
     if 1 <= mark_input <= len(tasks):
-        tasks[mark_input[1]] = "Complete"
+        tasks[mark_input - 1][1] = "Complete"
+        print(f"'{tasks[mark_input - 1][0]}' marked 'Complete'.")
     else:
         raise ValueError(f"Invalid input. Please enter a number corresponding to a task (1-{len(tasks)}).")
+    
 def delete_task():
-    delete_input = int(input(f"Enter which task you want to delete (1-{len(tasks)}): "))
+    view_tasks()
+    delete_input = int(input(f"\nEnter which task you want to delete (1-{len(tasks)}): "))
     if 1 <= delete_input <= len(tasks):
-        tasks.pop(delete_input)
-        print(f"'{tasks[delete_input[0]]}' deleted from your to-do list.")
+        print(f"'{tasks[delete_input - 1][0]}' deleted from your to-do list.")
+        tasks.pop(delete_input - 1)
     else:
         raise ValueError(f"Invalid input. Please enter a number corresponding to a task (1-{len(tasks)}).")
 
@@ -29,7 +38,7 @@ print("Welcome to the To-Do List App!")
 while True:
     print("\nMenu:\n1. Add a task\n2. View tasks\n3. Mark a task as complete\n4. Delete a task\n5. Quit")
     try:
-        menu_input = int(input("Enter the action you would like to perform (1, 2, 3, 4, or 5): "))
+        menu_input = int(input("\nEnter the action you would like to perform (1-5): "))
         if menu_input == 1:
             add_task()
         elif menu_input == 2:
@@ -54,12 +63,9 @@ while True:
             raise ValueError("Invalid input. Please enter a number corresponding to an action (1-5).")
         
     except ValueError as ve:
-        if "invalid literal" in ve:
-            print("ValueError: Invalid input. Please enter a number.")
+        if "invalid literal" in str(ve):
+            print("ValueError: Invalid input. Please enter a positive integer.")
         else:
             print(f"ValueError: {ve}")
 
-# Task 6: Testing and Debugging
-
-
-# Task 8: Optional Features
+# Optional Features
